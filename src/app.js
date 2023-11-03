@@ -7,10 +7,8 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const loginRoutes = require('./routes/login');
 
-const options = {
-  key: fs.readFileSync('server.key'),
-  cert: fs.readFileSync('server.cert')
-};
+const key = fs.readFileSync('key.pem');
+const cert = fs.readFileSync('cert.pem');
 
 const app = express();
 app.set('port', 4000);
@@ -41,7 +39,7 @@ app.use(session({
   saveUninitialized: true
 }));
 
-https.createServer(options, app).listen(app.get('port'), () => {
+https.createServer({ key: key, cert: cert }, app).listen(app.get('port'), () => {
   console.log('Listening on port ', app.get('port'));
 });
 
