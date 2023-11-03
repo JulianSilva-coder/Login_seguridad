@@ -1,3 +1,5 @@
+const https = require('https');
+const fs = require('fs');
 const express = require('express');
 const { engine } = require('express-handlebars');
 const session = require('express-session');
@@ -5,6 +7,10 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const loginRoutes = require('./routes/login');
 
+const options = {
+  key: fs.readFileSync('server.key'),
+  cert: fs.readFileSync('server.cert')
+};
 
 const app = express();
 app.set('port', 4000);
@@ -35,11 +41,11 @@ app.use(session({
   saveUninitialized: true
 }));
 
-app.listen(app.get('port'), () => {
+https.createServer(options, app).listen(app.get('port'), () => {
   console.log('Listening on port ', app.get('port'));
 });
 
-app.use('/',  loginRoutes);
+app.use('/', loginRoutes);
 
 app.get('/', (req, res) => {
   res.render('home');
