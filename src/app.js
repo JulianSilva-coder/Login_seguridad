@@ -9,8 +9,8 @@ const loginRoutes = require('./routes/login');
 const path = require('path');
 
 const options = {
-  key: fs.readFileSync(path.join(__dirname, 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'cert.pem')),
+  key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'cert' ,'cert.pem')),
   passphrase: 'julianseguridad'
 };
 
