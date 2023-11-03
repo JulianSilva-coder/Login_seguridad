@@ -1,0 +1,13 @@
+<div class="block mx-auto my-12 p-8 bg-white w-173 border border-gray-200 rounded-lg shadow-lg">
+    <h1 class="text-5xl m-16 font-bold text-center">Register</h1>
+    <form action="/register" method="POST" class="mt-4">
+        <input type="email" name="correo" placeholder="Correo Electronico" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" required>
+        <input type="password" name="contrasena" placeholder="Contraseña" class="border border-gray-200 w-full text-lg placeholder-gray-500 p-2 my-2 focus:bg-white" required>
+
+        <button type="submit" class="rounded-md bg-green-500 w-full text-lg text-white font-semibold p-2 my-3 hover:bg-green-600 focus:bg-green-700">Registrarse</button>
+
+        {{#if error}}
+            <p class="text-red-500 font-bold text-lg my-3">* {{error}}</p>
+        {{/if}}
+    </form>
+</div>
