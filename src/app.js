@@ -6,10 +6,11 @@ const session = require('express-session');
 const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const loginRoutes = require('./routes/login');
+const path = require('path');
 
 const options = {
-  key: fs.readFileSync('key.pem'),
-  cert: fs.readFileSync('cert.pem'),
+  key: fs.readFileSync(path.join(__dirname, 'key.pem')),
+  cert: fs.readFileSync(path.join(__dirname, 'cert.pem')),
   passphrase: 'julianseguridad'
 };
 
