@@ -10,12 +10,12 @@ const path = require('path');
 
 const options = {
   key: fs.readFileSync(path.join(__dirname, 'cert', 'key.pem')),
-  cert: fs.readFileSync(path.join(__dirname, 'cert' ,'cert.pem')),
-  passphrase: 'julianseguridad'
+  cert: fs.readFileSync(path.join(__dirname, 'cert', 'cert.pem')),
+  passphrase: 'julian'
 };
 
 const app = express();
-app.set('port', 4000);
+app.set('port', 443);
 
 app.set('views', __dirname + '/views');
 app.engine('.hbs', engine({ extname: '.hbs' }));
@@ -52,5 +52,3 @@ app.use('/', loginRoutes);
 app.get('/', (req, res) => {
   res.render('home');
 });
-
-// Aquí puedes agregar tus rutas y consultas a la base de datos PostgreSQL usando req.pool
