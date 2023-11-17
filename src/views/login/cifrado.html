@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cifrado Afín y Gráfico de Frecuencia</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Cifrado Afín y Gráfico de Frecuencia</h1>
+    <label for="mensaje">Mensaje:</label>
+    <input type="text" id="mensaje"><br><br>
+    
+    <label for="a">Valor de a:</label>
+    <input type="number" id="a"><br><br>
+    
+    <label for="b">Valor de b:</label>
+    <input type="number" id="b"><br><br>
+    
+    <button onclick="encryptAndPlot()">Cifrar Mensaje y Mostrar Gráfico</button><br><br>
+    
+    <div id="resultado_cifrado"></div><br>
+    
+    <canvas id="myChart" width="400" height="400"></canvas>
+
+    <script src="script.js"></script>
+</body>
+</html>
