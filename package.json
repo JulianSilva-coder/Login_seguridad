@@ -19,6 +19,7 @@
     "express-myconnection": "^1.0.4",
     "express-recaptcha": "^5.1.0",
     "express-session": "^1.17.3",
+    "hbs": "^4.2.0",
     "mysql": "^2.18.1",
     "pg": "^8.11.3"
   }
