@@ -5,7 +5,6 @@ const bodyParser = require('body-parser');
 const { Pool } = require('pg');
 const loginRoutes = require('./routes/login');
 
-
 const app = express();
 app.set('port', 4000);
 
@@ -35,11 +34,14 @@ app.use(session({
   saveUninitialized: true
 }));
 
+// Configuración para servir archivos estáticos
+app.use(express.static(__dirname + '/views/login'));
+
 app.listen(app.get('port'), () => {
   console.log('Listening on port ', app.get('port'));
 });
 
-app.use('/',  loginRoutes);
+app.use('/', loginRoutes);
 
 app.get('/', (req, res) => {
   res.render('home');

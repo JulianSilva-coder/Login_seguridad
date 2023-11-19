@@ -29,9 +29,17 @@ async function auth(req, res) {
         const storedUser = result.rows[0];
         const hashedPassword = crypto.createHash('sha256').update(data.contrasena1).digest('hex');
 
+        // Verificar si el usuario está bloqueado
+        if (storedUser.locked_until && storedUser.locked_until > new Date()) {
+            const remainingTime = Math.ceil((storedUser.locked_until - new Date()) / 1000 / 60);
+            return res.render('login/index', { error: `Usuario bloqueado. Intente nuevamente después de ${remainingTime} minutos` });
+        }
+
         // Verificar si el usuario ha superado el límite de intentos de inicio de sesión.
-        if (storedUser.login_attempts >= 3) {
-            return res.render('login/index', { error: 'La contraseña es incorrecta. Usuario bloqueado' });
+        if (storedUser.login_attemps >= 3) {
+            const lockTime = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+            await pool.query('UPDATE users SET login_attemps = 0, locked_until = $2 WHERE email = $1', [data.email1, lockTime]);
+            return res.render('login/index', { error: 'La contraseña es incorrecta. Usuario bloqueado por 5 minutos' });
         }
 
         if (hashedPassword === storedUser.password) {
@@ -39,7 +47,7 @@ async function auth(req, res) {
             // Reiniciar el contador de intentos de inicio de sesión si la autenticación es exitosa.
             await pool.query('UPDATE users SET login_attemps = 0 WHERE email = $1', [data.email1]);
             // Aquí puedes manejar la lógica correspondiente si la autenticación es exitosa.
-            return res.send('Autenticación exitosa');
+            return res.redirect("./cifrado");
         } else {
             // Incrementar el contador de intentos de inicio de sesión si la contraseña es incorrecta.
             await pool.query('UPDATE users SET login_attemps = login_attemps + 1 WHERE email = $1', [data.email1]);
@@ -48,9 +56,11 @@ async function auth(req, res) {
                 'SELECT login_attemps FROM users WHERE email = $1',
                 [data.email1]
             );
-            const attempts = attemptsRows[0].login_attempts;
+            const attempts = attemptsRows[0].login_attemps;
             if (attempts >= 3) {
-                return res.render('login/index', { error: 'La contraseña es incorrecta. Usuario bloqueado' });
+                const lockTime = new Date(Date.now() + 5 * 60 * 1000); // 5 minutes from now
+                await pool.query('UPDATE users SET locked_until = $2 WHERE email = $1', [data.email1, lockTime]);
+                return res.render('login/index', { error: 'La contraseña es incorrecta. Usuario bloqueado por 5 minutos' });
             }
             return res.render('login/index', { error: 'Error: La contraseña es incorrecta' });
         }
